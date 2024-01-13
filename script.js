@@ -15,13 +15,9 @@ $(document).ready(function() {
     if (storedUsername) {
         user.push(storedUsername);
         $('.initModal').css('display', 'none');
-        // Check if the username is set and enable scrolling
-        $('body').css('overflow', 'auto');
     } else {
         // Show the screen to enter the username
         $('.initModal').css('display', 'block');
-        // Disable scrolling until the username is set
-        $('body').css('overflow', 'hidden');
     }
 });
 
@@ -46,8 +42,6 @@ usernameInput.on('keyup', function(e) {
 
         $('.initModal').css('display', 'none');
         console.log(user);
-        // Enable scrolling once the username is set
-        $('body').css('overflow', 'auto');
     }
 });
 
@@ -65,7 +59,8 @@ input.on('keyup', function(e) {
 
 messages.on("child_added", function(snap) {
     wrap.append('<li><span>' + $.sanitize(snap.val().user) + ':</span> ' + $.sanitize(snap.val().message) + '</li>');
-    window.scrollTo(0, document.body.scrollHeight);
+    // Remove the following line to prevent automatic scrolling
+    // window.scrollTo(0, document.body.scrollHeight);
 });
 
 // Add click event for clearing local storage
@@ -73,14 +68,5 @@ clearLocalStorageBtn.on('click', function() {
     localStorage.removeItem('username');
     user = []; // Clear the user array
     $('.initModal').css('display', 'block'); // Show the username input modal
-    $('body').css('overflow', 'hidden'); // Disable scrolling until the username is set
 });
-
-// Ensure the button is properly selected
-$(document).on('click', '#clearLocalStorage', function() {
-    localStorage.removeItem('username');
-    user = [];
-    $('.initModal').css('display', 'block');
-    $('body').css('overflow', 'hidden');
-});
-            
+                
