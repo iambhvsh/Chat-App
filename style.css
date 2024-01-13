@@ -69,7 +69,7 @@ li {
   max-width: 650px;
   margin: 0 auto;
   padding-bottom: 70px;
-  margin-top: 1rem;
+  margin-top: 2rem;
   overflow-x: hidden;
   word-wrap: break-word;
 }
@@ -93,9 +93,8 @@ input.message {
   border: solid 1px #222;
   height: 60px;
   border-radius: 50px;
-  background: transparent;
+  background: rgba(0,0,0,0.1);
   backdrop-filter: blur(50px);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
   padding: 0 20px;
   left: 50%;
   transform: translateX(-50%);
