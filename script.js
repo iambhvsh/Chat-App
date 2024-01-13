@@ -5,7 +5,6 @@ var btn = $('button');
 var wrap = $('.wrapper');
 var input = $('input.message');
 var usernameInput = $('input.username');
-var clearLocalStorageBtn = $('#clearLocalStorage'); // Reference to the clearLocalStorage button
 
 var user = [];
 
@@ -57,16 +56,7 @@ input.on('keyup', function(e) {
     }
 });
 
-messages.on("child_added", function(snap) {
+messages.limitToLast(100).on("child_added", function(snap) {
     wrap.append('<li><span>' + $.sanitize(snap.val().user) + ':</span> ' + $.sanitize(snap.val().message) + '</li>');
-    // Remove the following line to prevent automatic scrolling
-    // window.scrollTo(0, document.body.scrollHeight);
+    window.scrollTo(0, document.body.scrollHeight);
 });
-
-// Add click event for clearing local storage
-clearLocalStorageBtn.on('click', function() {
-    localStorage.removeItem('username');
-    user = []; // Clear the user array
-    $('.initModal').css('display', 'block'); // Show the username input modal
-});
-                
