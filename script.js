@@ -75,4 +75,3 @@ clearLocalStorageBtn.on('click', function() {
     $('.initModal').css('display', 'block'); // Show the username input modal
     $('body').css('overflow', 'hidden'); // Disable scrolling until the username is set
 });
-	
