@@ -64,8 +64,8 @@ input.on('keyup', function(e) {
 });
 
 messages.on("child_added", function(snap) {
-  wrap.append('<li><span>' + $.sanitize(snap.val().user) + ':</span> ' + $.sanitize(snap.val().message) + '</li>');
-  window.scrollTo(0, document.body.scrollHeight);
+    wrap.append('<li><span>' + $.sanitize(snap.val().user) + ':</span> ' + $.sanitize(snap.val().message) + '</li>');
+    window.scrollTo(0, document.body.scrollHeight);
 });
 
 // Add click event for clearing local storage
@@ -75,3 +75,12 @@ clearLocalStorageBtn.on('click', function() {
     $('.initModal').css('display', 'block'); // Show the username input modal
     $('body').css('overflow', 'hidden'); // Disable scrolling until the username is set
 });
+
+// Ensure the button is properly selected
+$(document).on('click', '#clearLocalStorage', function() {
+    localStorage.removeItem('username');
+    user = [];
+    $('.initModal').css('display', 'block');
+    $('body').css('overflow', 'hidden');
+});
+            
