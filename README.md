@@ -1,13 +1,35 @@
-# Chat App
+# Chat App <br/> by iambhvsh ⚡
 
-Chat App created in Html, Css, Js & Firebase.
+**[Visit App ⟩](https://stackx.vercel.app)**
 
-## Features
+## Languages 🌍
 
-**Fast**
+**- Html**
 <br/>
-**Easy**
+**- Css**
 <br/>
-**Cool UI**
+**- Js**
 
-## If you have any queries mail me here at iam.bhvsh@gmail.com
+## Features 😮
+
+**- Chat Globally ⚡**
+<br/>
+**- Saves your User name locally 🤩**
+<br/>
+**- Stores message in Firebase Database 🔥**
+<br/>
+**- Blazing fast message delivery 🥵**
+<br/>
+**- Cool User Interface 😎**
+
+## Social 👨🏻
+
+**- [Instagram](https://instagram.com/iambhvsh)**
+<br/>
+**- [Website](https://iambhvsh.vercel.app)**
+<br/>
+**- [Github](https://github.com/iambhvsh)**
+<br/>
+**- [Mail Me](mailto:iam.bhvsh@gmail.com)**
+
+## Thank You, <br/> iambhvsh ❤️
