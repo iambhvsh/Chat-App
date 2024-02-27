@@ -4,11 +4,13 @@
 
 ## Languages 🌍
 
-**- Html**
+**- Hyper Text Markup Language**
 <br/>
-**- Css**
+**- Cascading Style Sheets**
 <br/>
-**- Js**
+**- Javascript**
+<br/>
+**- Vanilla Js**
 
 ## Features 😮
 
