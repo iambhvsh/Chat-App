@@ -1,6 +1,6 @@
 # Chat App <br/> by iambhvsh ⚡
 
-**[Visit App ⟩](https://stackx.vercel.app)**
+**[Visit App ⟩](https://iambhvshchat.vercel.app)**
 
 ## Languages 🌍
 
