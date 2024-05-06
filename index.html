@@ -1,32 +1,177 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Chat App - Bhavesh Patil</title>
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-  <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+
+<title>Chat App - Bhavesh Patil</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
 </head>
 
-<body>
-  <div class="wrapper">
-    <input class="message" type="text" placeholder="Enter message and press enter" />
-  </div>
+<body class="bg-black">
 
-  <div class="initModal">
-    <h1 style="color: white;">Chat App</h1>
-    <br>
-    <h3>What's your name?</h3>
-    <input type="text" class="username" placeholder="Enter your name and press enter" />
-  </div>
+<div class="max-w-screen-lg mx-auto flex flex-col h-screen">
 
-  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-  <script src='https://cdn.firebase.com/js/client/2.4.1/firebase.js'></script>
-  <script src="script.js"></script>
+<!-- Chat Messages -->
+
+<div class="flex-grow flex flex-col justify-end p-4">
+
+<ul id="messages" class="overflow-auto mb-14"></ul>
+
+</div>
+
+<!-- Input Box -->
+
+<div class="bg-black backdrop-filter backdrop-blur-md bg-opacity-40 flex p-4 fixed bottom-0 w-full">
+
+<input id="message" type="text" placeholder="Enter message and press enter" class="flex-grow bg-gray-900 rounded-full px-4 py-2 focus:outline-none text-white">
+
+</div>
+
+</div>
+
+<!-- Username Modal -->
+
+<div id="usernameModal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center hidden">
+
+<div class="bg-gray-900 p-8">
+
+<h2 class="text-2xl font-semibold text-white mb-2">Chatify ❤️</h2>
+
+<p class="text-xl text-white mb-4">To get started, Enter your Username.</p>
+
+<input id="usernameInput" type="text" placeholder="Username" class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none">
+
+<button id="submitUsername" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-full focus:outline-none">Submit</button>
+
+</div>
+
+</div>
+
+<!-- Reset Username -->
+
+<button id="clearUsername" class="mt-2 mr-2 px-4 py-2 top-0 right-0 bg-red-500 text-white rounded-full focus:outline-none fixed hidden">
+
+Reset
+
+</button>
+
+<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+<script src='https://cdn.firebase.com/js/client/2.4.1/firebase.js'></script>
+
+<script>
+
+var fb = new Firebase("https://chat-app-1b1c5-default-rtdb.firebaseio.com/");
+var messages = fb.child("messages");
+var user = localStorage.getItem('username');
+
+// Check if username is in local storage on page load
+$(document).ready(function() {
+  if (!user) {
+    // Show the username modal if username is not in local storage
+    $('#usernameModal').show();
+  }
+});
+
+// Submit username handler
+$('#submitUsername').on('click', function() {
+  var username = $('#usernameInput').val();
+  if (username.length > 0) {
+    user = username;
+
+    // Store username in local storage
+    localStorage.setItem('username', username);
+
+    // Upload username to Firebase
+    fb.child("users").push({ username: username });
+
+    // Hide username modal
+    $('#usernameModal').hide();
+
+    // Show clear username button
+    $('#clearUsername').removeClass('hidden');
+  }
+});
+
+// Clear username handler
+$('#clearUsername').on('click', function() {
+  if (user) {
+    // Remove username from local storage
+    localStorage.removeItem('username');
+
+    // Remove username from Firebase
+    fb.child("users").orderByChild("username").equalTo(user).once("value", function(snapshot) {
+      snapshot.forEach(function(child) {
+        fb.child("users").child(child.key).remove();
+      });
+    });
+
+    // Clear username
+    user = null;
+
+    // Show username modal
+    $('#usernameModal').show();
+
+    // Hide clear username button
+    $(this).addClass('hidden');
+  }
+});
+
+// Sanitize function
+(function($) {
+  $.sanitize = function(input) {
+    var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
+    replace(/<[\/\!]*?[^<>]*?>/gi, '').
+    replace(/<style[^>]*?>.*?<\/style>/gi, '').
+    replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
+    return output;
+  };
+})(jQuery);
+
+// Message input handler
+$('#message').on('keyup', function(e) {
+  if (e.keyCode === 13 && $(this).val().length > 0) {
+    var getTxt = $(this).val();
+    var timestamp = new Date().toISOString();
+    messages.push({
+      user: user,
+      message: getTxt,
+      timestamp: timestamp
+    });
+    $(this).val('');
+  }
+});
+
+// Firebase child added listener
+messages.limitToLast(100).on("child_added", function(snap) {
+  var message = snap.val();
+  var isCurrentUser = message.user === user;
+
+  // Format timestamp to display only the time
+  var time = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  var bubbleClass = isCurrentUser ? 'bg-blue-500 text-white rounded-br-none rounded-bl-lg' : 'bg-gray-300 text-black rounded-bl-none rounded-br-lg';
+
+  var justifyClass = isCurrentUser ? 'justify-end' : 'justify-start';
+
+  var messageHTML = '<li class="mb-2"><div class="flex ' + justifyClass + '"><div class="max-w-sm mx-2"><div class="rounded-lg px-4 py-2 ' + bubbleClass + '"><p class="text-sm">' + $.sanitize(message.message) + '</p><p class="text-xs text-black">' + message.user + ' • ' + time + '</p></div></div></div></li>';
+
+  // Append the message HTML to the appropriate container
+  $('#messages').append(messageHTML);
+
+  // Scroll to the bottom of the message container
+  window.scrollTo(0, document.body.scrollHeight);
+});
+
+</script>
+
 </body>
 
 </html>
