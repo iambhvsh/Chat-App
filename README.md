@@ -6,7 +6,7 @@
 
 **- Hyper Text Markup Language**
 <br/>
-**- Cascading Style Sheets**
+**- Tailwind CSS**
 <br/>
 **- Javascript**
 <br/>
